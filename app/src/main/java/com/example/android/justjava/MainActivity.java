@@ -25,16 +25,20 @@ public class MainActivity extends ActionBarActivity {
      */
     public void submitOrder(View view) {
         int price = calculatePrice();
-        String priceMessage = createOrderSummary(price);
-        displayMessage(priceMessage);
+        displayMessage(createOrderSummary(price));
     }
 
+    /**
+     * Creates summary of the order
+     *
+     * @param price of the order
+     * @return the text summary
+     */
     private String createOrderSummary(int price) {
-        String priceMessage = "Name: Baba Ji" +
+        return "Name: Baba Ji" +
                 "\n Quantity: " + quantity +
                 "\n Total: $" + price +
                 "\n Gracias!";
-        return priceMessage;
     }
 
     /**
@@ -84,8 +88,7 @@ public class MainActivity extends ActionBarActivity {
      * @return total price
      */
     private int calculatePrice() {
-        int price = quantity * 5;
-        return price;
+        return quantity * 5;
     }
 }
 
