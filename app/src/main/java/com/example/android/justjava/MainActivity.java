@@ -33,8 +33,12 @@ public class MainActivity extends AppCompatActivity {
         //Esta opcion resume las dos lineas anterioes en una sola
         // boolean hasWhippedCream = ((CheckBox) findViewById(R.id.whipped_cream_checkbox)).isChecked();
 
+        CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.chocolate_checkbox);
+        boolean hasChocolate = chocolateCheckBox.isChecked();
+        Log.v("MainActivity", "Pidieron chocolate: " + hasChocolate);
+
         int price = calculatePrice();
-        displayMessage(createOrderSummary(price, hasWhippedCream));
+        displayMessage(createOrderSummary(price, hasWhippedCream, hasChocolate));
     }
 
     /**
@@ -43,9 +47,10 @@ public class MainActivity extends AppCompatActivity {
      * @param price of the order
      * @return the text summary
      */
-    private String createOrderSummary(int price, boolean hasWhippedCream) {
+    private String createOrderSummary(int price, boolean hasWhippedCream, boolean hasChocolate) {
         return "Name: Baba Ji" +
                 "\nAdd whipped cream: " + hasWhippedCream +
+                "\nAdd chocolate: " + hasChocolate +
                 "\nQuantity: " + quantity +
                 "\nTotal: $" + price +
                 "\nGracias!";
