@@ -1,12 +1,15 @@
 package com.example.android.justjava;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 
@@ -37,8 +40,12 @@ public class MainActivity extends AppCompatActivity {
         boolean hasChocolate = chocolateCheckBox.isChecked();
         Log.v("MainActivity", "Pidieron chocolate: " + hasChocolate);
 
-        int price = calculatePrice();
-        displayMessage(createOrderSummary(price, hasWhippedCream, hasChocolate));
+        EditText nameEditText = (EditText) findViewById(R.id.name_edittext);
+        String userName = nameEditText.getText().toString();
+        Log.v("MainActivity", "Nombre: " + userName);
+
+        int price = calculatePrice(hasWhippedCream, hasChocolate);
+        displayMessage(createOrderSummary(price, hasWhippedCream, hasChocolate, userName));
     }
 
     /**
@@ -47,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
      * @param price of the order
      * @return the text summary
      */
-    private String createOrderSummary(int price, boolean hasWhippedCream, boolean hasChocolate) {
-        return "Name: Baba Ji" +
+    private String createOrderSummary(int price, boolean hasWhippedCream, boolean hasChocolate,
+                                      String userName) {
+        return "Name: " + userName +
                 "\nAdd whipped cream: " + hasWhippedCream +
                 "\nAdd chocolate: " + hasChocolate +
                 "\nQuantity: " + quantity +
@@ -60,7 +68,17 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the plus button is clicked.
      */
     public void increment(View view) {
-        quantity += 1;
+        if (quantity < 100) {
+            quantity += 1;
+        } else {
+            Context context = getApplicationContext();
+            CharSequence text = "No puedes ordenar mas de 100 cafes";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
         displayQuantity(quantity);
     }
 
@@ -68,7 +86,16 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the minus button is clicked.
      */
     public void decrement(View view) {
-        quantity -= 1;
+        if (quantity > 0) {
+            quantity -= 1;
+        } else {
+            Context context = getApplicationContext();
+            CharSequence text = "Debes ordenar al menos una taza";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
         displayQuantity(quantity);
     }
 
@@ -94,8 +121,16 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return total price
      */
-    private int calculatePrice() {
-        return quantity * 5;
+    private int calculatePrice(boolean hasWhippedCream, boolean hasChocolate) {
+        int unitPrice = 5;
+        if (hasWhippedCream) {
+            unitPrice += 1;
+        }
+        if (hasChocolate) {
+            unitPrice += 2;
+        }
+
+        return quantity * unitPrice;
     }
 }
 
