@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Just Java</string>
+    <string name="name_hint">Nombre</string>
+    <string name="toppings_header">Ingredientes</string>
+    <string name="whipped_cream">Crema batida</string>
+    <string name="quantity_header">Cantidad</string>
+    <string name="submit_order">Ordenar</string>
+    <string name="hello_world">¡Hola Mundo!</string>
+    <string name="action_settings">Preferencias</string>
+    <string name="thank_you">Gracias!</string>
+</resources>

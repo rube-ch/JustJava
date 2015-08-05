@@ -1,6 +1,8 @@
 package com.example.android.justjava;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.http.protocol.HTTP;
 
 import java.text.NumberFormat;
 
@@ -45,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         Log.v("MainActivity", "Nombre: " + userName);
 
         int price = calculatePrice(hasWhippedCream, hasChocolate);
-        displayMessage(createOrderSummary(price, hasWhippedCream, hasChocolate, userName));
+        sendOrderSummary(createOrderSummary(price, hasWhippedCream, hasChocolate, userName));
     }
 
     /**
@@ -56,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private String createOrderSummary(int price, boolean hasWhippedCream, boolean hasChocolate,
                                       String userName) {
-        return "Name: " + userName +
+        return getString(R.string.name_hint) + ": " + userName +
                 "\nAdd whipped cream: " + hasWhippedCream +
                 "\nAdd chocolate: " + hasChocolate +
-                "\nQuantity: " + quantity +
+                "\n" + getString(R.string.quantity_header) + ": " + quantity +
                 "\nTotal: $" + price +
-                "\nGracias!";
+                "\n" + getString(R.string.thank_you);
     }
 
     /**
@@ -111,9 +115,29 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method displays the given text on the screen.
      */
-    private void displayMessage(String message) {
-        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
-        orderSummaryTextView.setText(message);
+//    private void displayMessage(String message) {
+//        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
+//        orderSummaryTextView.setText(message);
+//    }
+
+    /**
+     * This method sends the order summary by email.
+     */
+    private void sendOrderSummary(String message) {
+        // Build the intent
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+// The intent does not have a URI, so declare the "text/plain" MIME type
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Just Java Order Summary");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, message);
+
+// Verify it resolves and send the Intent
+        if (emailIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(emailIntent);
+        }
+
+
+
     }
 
     /**
